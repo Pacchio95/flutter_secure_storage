@@ -180,7 +180,7 @@ class FlutterSecureStorage {
   /// [mOptions] optional MacOs options
   /// [wOptions] optional Windows options
   /// Can throw a [PlatformException].
-  Future<Int?> readInt({
+  Future<int?> readInt({
     required String key,
     IOSOptions? iOptions,
     AndroidOptions? aOptions,
@@ -188,7 +188,7 @@ class FlutterSecureStorage {
     WebOptions? webOptions,
     MacOsOptions? mOptions,
     WindowsOptions? wOptions,
-  }) =>
+  }) async =>
       int.parse(await _platform.read(
         key: key,
         options: _selectOptions(
@@ -200,7 +200,7 @@ class FlutterSecureStorage {
           wOptions,
         ),
       )
-  );
+      );
 
 
   /// Returns true if the storage contains the given [key].
