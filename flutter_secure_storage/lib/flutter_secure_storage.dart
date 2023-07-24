@@ -188,86 +188,6 @@ class FlutterSecureStorage {
     WebOptions? webOptions,
     MacOsOptions? mOptions,
     WindowsOptions? wOptions,
-  }) async =>
-      int.parse(await _platform.read(
-        key: key,
-        options: _selectOptions(
-          iOptions,
-          aOptions,
-          lOptions,
-          webOptions,
-          mOptions,
-          wOptions,
-        ),
-      ) ?? "-1"
-      );
-
-  /// Encrypts and saves the [key] with the given integer [value].
-  ///
-  /// If the key was already in the storage, its associated value is changed.
-  /// If the value is null, deletes associated value for the given [key].
-  /// [key] shouldn't be null.
-  /// [value] required value
-  /// [iOptions] optional iOS options
-  /// [aOptions] optional Android options
-  /// [lOptions] optional Linux options
-  /// [webOptions] optional web options
-  /// [mOptions] optional MacOs options
-  /// [wOptions] optional Windows options
-  /// Can throw a [PlatformException].
-  Future<void> writeInt({
-    required String key,
-    required int? value,
-    IOSOptions? iOptions,
-    AndroidOptions? aOptions,
-    LinuxOptions? lOptions,
-    WebOptions? webOptions,
-    MacOsOptions? mOptions,
-    WindowsOptions? wOptions,
-  }) =>
-      value == null
-          ? _platform.delete(
-        key: key,
-        options: _selectOptions(
-          iOptions,
-          aOptions,
-          lOptions,
-          webOptions,
-          mOptions,
-          wOptions,
-        ),
-      )
-          : _platform.write(
-        key: key,
-        value: value.toString(),
-        options: _selectOptions(
-          iOptions,
-          aOptions,
-          lOptions,
-          webOptions,
-          mOptions,
-          wOptions,
-        ),
-      );
-
-  /// Decrypts and returns the integer value for the given [key] or null if [key] is not in the storage.
-  ///
-  /// [key] shouldn't be null.
-  /// [iOptions] optional iOS options
-  /// [aOptions] optional Android options
-  /// [lOptions] optional Linux options
-  /// [webOptions] optional web options
-  /// [mOptions] optional MacOs options
-  /// [wOptions] optional Windows options
-  /// Can throw a [PlatformException].
-  Future<int?> readInt({
-    required String key,
-    IOSOptions? iOptions,
-    AndroidOptions? aOptions,
-    LinuxOptions? lOptions,
-    WebOptions? webOptions,
-    MacOsOptions? mOptions,
-    WindowsOptions? wOptions,
   }) async {
     var value = await _platform.read(
       key: key,
@@ -279,8 +199,8 @@ class FlutterSecureStorage {
         mOptions,
         wOptions,
       ),
-    )
-    return (value != null) ? int.parse(value) : value
+    );
+    return (value != null) ? int.parse(value) : value;
   }
 
 
