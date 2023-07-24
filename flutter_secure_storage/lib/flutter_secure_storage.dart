@@ -241,7 +241,7 @@ class FlutterSecureStorage {
       )
           : _platform.write(
         key: key,
-        value: value.toString(),
+        value: jsonEncode(value),
         options: _selectOptions(
           iOptions,
           aOptions,
