@@ -200,7 +200,7 @@ class FlutterSecureStorage {
         wOptions,
       ),
     );
-    return (value != null) ? int.parse(value) : value;
+    return (value != null) ? int.parse(value) : null;
   }
 
 
