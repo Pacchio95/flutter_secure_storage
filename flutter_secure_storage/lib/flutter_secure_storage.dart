@@ -8,11 +8,17 @@ import 'package:flutter_secure_storage/test/test_flutter_secure_storage_platform
 import 'package:flutter_secure_storage_platform_interface/flutter_secure_storage_platform_interface.dart';
 
 part './options/android_options.dart';
+
 part './options/apple_options.dart';
+
 part './options/ios_options.dart';
+
 part './options/linux_options.dart';
+
 part './options/macos_options.dart';
+
 part './options/web_options.dart';
+
 part './options/windows_options.dart';
 
 class FlutterSecureStorage {
@@ -33,6 +39,7 @@ class FlutterSecureStorage {
   });
 
   static const UNSUPPORTED_PLATFORM = 'unsupported_platform';
+
   FlutterSecureStoragePlatform get _platform =>
       FlutterSecureStoragePlatform.instance;
 
@@ -61,28 +68,28 @@ class FlutterSecureStorage {
   }) =>
       value == null
           ? _platform.delete(
-              key: key,
-              options: _selectOptions(
-                iOptions,
-                aOptions,
-                lOptions,
-                webOptions,
-                mOptions,
-                wOptions,
-              ),
-            )
+        key: key,
+        options: _selectOptions(
+          iOptions,
+          aOptions,
+          lOptions,
+          webOptions,
+          mOptions,
+          wOptions,
+        ),
+      )
           : _platform.write(
-              key: key,
-              value: value,
-              options: _selectOptions(
-                iOptions,
-                aOptions,
-                lOptions,
-                webOptions,
-                mOptions,
-                wOptions,
-              ),
-            );
+        key: key,
+        value: value,
+        options: _selectOptions(
+          iOptions,
+          aOptions,
+          lOptions,
+          webOptions,
+          mOptions,
+          wOptions,
+        ),
+      );
 
   /// Decrypts and returns the value for the given [key] or null if [key] is not in the storage.
   ///
@@ -114,6 +121,87 @@ class FlutterSecureStorage {
           wOptions,
         ),
       );
+
+  /// Encrypts and saves the [key] with the given integer [value].
+  ///
+  /// If the key was already in the storage, its associated value is changed.
+  /// If the value is null, deletes associated value for the given [key].
+  /// [key] shouldn't be null.
+  /// [value] required value
+  /// [iOptions] optional iOS options
+  /// [aOptions] optional Android options
+  /// [lOptions] optional Linux options
+  /// [webOptions] optional web options
+  /// [mOptions] optional MacOs options
+  /// [wOptions] optional Windows options
+  /// Can throw a [PlatformException].
+  Future<void> writeInt({
+    required String key,
+    required int? value,
+    IOSOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    MacOsOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) =>
+      value == null
+          ? _platform.delete(
+        key: key,
+        options: _selectOptions(
+          iOptions,
+          aOptions,
+          lOptions,
+          webOptions,
+          mOptions,
+          wOptions,
+        ),
+      )
+          : _platform.write(
+        key: key,
+        value: value.toString(),
+        options: _selectOptions(
+          iOptions,
+          aOptions,
+          lOptions,
+          webOptions,
+          mOptions,
+          wOptions,
+        ),
+      );
+
+  /// Decrypts and returns the integer value for the given [key] or null if [key] is not in the storage.
+  ///
+  /// [key] shouldn't be null.
+  /// [iOptions] optional iOS options
+  /// [aOptions] optional Android options
+  /// [lOptions] optional Linux options
+  /// [webOptions] optional web options
+  /// [mOptions] optional MacOs options
+  /// [wOptions] optional Windows options
+  /// Can throw a [PlatformException].
+  Future<Int?> readInt({
+    required String key,
+    IOSOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    MacOsOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) =>
+      int.parse(await _platform.read(
+        key: key,
+        options: _selectOptions(
+          iOptions,
+          aOptions,
+          lOptions,
+          webOptions,
+          mOptions,
+          wOptions,
+        ),
+      )
+  );
+
 
   /// Returns true if the storage contains the given [key].
   ///
@@ -236,14 +324,12 @@ class FlutterSecureStorage {
       );
 
   /// Select correct options based on current platform
-  Map<String, String> _selectOptions(
-    IOSOptions? iOptions,
-    AndroidOptions? aOptions,
-    LinuxOptions? lOptions,
-    WebOptions? webOptions,
-    MacOsOptions? mOptions,
-    WindowsOptions? wOptions,
-  ) {
+  Map<String, String> _selectOptions(IOSOptions? iOptions,
+      AndroidOptions? aOptions,
+      LinuxOptions? lOptions,
+      WebOptions? webOptions,
+      MacOsOptions? mOptions,
+      WindowsOptions? wOptions,) {
     if (kIsWeb) {
       return webOptions?.params ?? this.webOptions.params;
     } else if (Platform.isLinux) {
